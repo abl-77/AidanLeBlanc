@@ -7,7 +7,6 @@
 !*.py
 !*.md
 !*.PNG
-!*.txt
 
 #keep the things in the subdirectitories too
 !*/
