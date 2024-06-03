@@ -1,1 +1,1 @@
-This is a simple test to figure out if my frequency code is working as anticipated
+This is a simple test to figure out if my cipher code is working as anticipated

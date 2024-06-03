@@ -12,20 +12,23 @@ def decode(encoded_message, decoded_message, key):
 
 def decodeLine(line, key):
     str = ""
-    words = line.split()
-    for word in words:
-        str += decodeWord(word, key)
+    for ltr in line:
+        if ord(ltr) >= 32 and ord(ltr) <= 126:
+            if (ord(ltr) + key <= 126):
+                str += (chr((ord(ltr) + key)))
+            else:
+                str += (chr(32 + (ord(ltr) + key) % 127))
     str += "\n"
     return str
 
 def decodeWord(word, key):
     code = []
     for ltr in word:
-        if ord(ltr) >= 33 and ord(ltr) <= 126:
+        if ord(ltr) >= 32 and ord(ltr) <= 126:
             if (ord(ltr) + key <= 126):
                 code.append(chr((ord(ltr) + key)))
             else:
-                code.append(chr(33 + (ord(ltr) + key) % 127))
+                code.append(chr(32 + (ord(ltr) + key) % 127))
     decoded = ""
     for char in code:
         decoded += char
@@ -33,6 +36,7 @@ def decodeWord(word, key):
     return decoded + " "
 
 def encode(message, result, key):
+    key = 95 - key
     msg = ""
     with open(message, "r") as m:
         for line in m:
@@ -44,21 +48,24 @@ def encode(message, result, key):
 
 def encodeLine(line, key):
     str = ""
-    words = line.split()
-    for word in words:
-        str += encodeWord(word, key)
+    for ltr in line:
+        if ord(ltr) >= 32 and ord(ltr) <= 126:
+            if (ord(ltr) + key <= 126):
+                str += (chr((ord(ltr) + key)))
+            else:
+                str += (chr(32 + (ord(ltr) + key) % 127))
     str += "\n"
     return str
 
 def encodeWord(word, key):
-    key = 94 - key
+    key = 95 - key
     code = []
     for ltr in word:
-        if ord(ltr) >= 33 and ord(ltr) <= 126:
+        if ord(ltr) >= 32 and ord(ltr) <= 126:
             if (ord(ltr) + key <= 126):
                 code.append(chr((ord(ltr) + key)))
             else:
-                code.append(chr(33 + (ord(ltr) + key) % 127))
+                code.append(chr(32 + (ord(ltr) + key) % 127))
     
     encoded = ""
     for char in code:
@@ -71,7 +78,7 @@ def frequencyAnalysis(encoded_message, decoded_message):
     with open(encoded_message, "r") as m:
         for line in m:
             for ltr in line:
-                if (ord(ltr) > 32 and ord(ltr) < 127):
+                if (ord(ltr) >= 32 and ord(ltr) < 127):
                     if (ord(ltr) in frequency):
                         frequency[ord(ltr)] += 1
                     else:
@@ -97,6 +104,6 @@ def estimatedKey(frequency):
     
 encode("sent_decoded.txt", "received_encoded.txt", 85)
 
-frequencyAnalysis("received_encoded.txt", "received_decoded.txt")
+# frequencyAnalysis("received_encoded.txt", "received_decoded.txt")
 
-# decode("received_encoded.txt", "received_decoded.txt", 8)
+decode("received_encoded.txt", "received_decoded.txt", 85)
