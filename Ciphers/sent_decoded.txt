@@ -1,1 +1,1 @@
-This is a simple test to figure out if my cipher code is working as anticipated
+The quick brown fox jumped over the lazy dog.
