@@ -103,6 +103,6 @@ def estimatedKey(frequency):
         return ord('e') - key
     return 94 - (key - ord('e'))
 
-encode("sent_decoded.txt", "sent_encoded.txt", 10)
+encode("sent_decoded.txt", "received_encoded.txt", 10)
 
 decode("received_encoded.txt", "received_decoded.txt", 10)

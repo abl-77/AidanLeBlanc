@@ -42,6 +42,6 @@ def encodeLine(line, key):
     return str
 
     
-encode("sent_decoded.txt", "received_encoded.txt", 85)
+# encode("sent_decoded.txt", "received_encoded.txt", 85)
 
-decode("received_encoded.txt", "received_decoded.txt", 85)
+decode("received_encoded.txt", "received_decoded.txt", 8)
