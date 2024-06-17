@@ -79,7 +79,7 @@ def frequencyAnalysis(encoded_message, decoded_message):
     with open(encoded_message, "r") as m:
         for line in m:
             for ltr in line:
-                if (ord(ltr) >= 32 and ord(ltr) < 127):
+                if (ord(ltr) >= 65 and ord(ltr) < 123):
                     if (ord(ltr) in frequency):
                         frequency[ord(ltr)] += 1
                     else:
@@ -88,7 +88,7 @@ def frequencyAnalysis(encoded_message, decoded_message):
     ltrs = list(frequency.keys())
     freq = list(frequency.values())
 
-    # plt.bar(range(len(ltrs)), freq, tick_label=ltrs)
+    plt.bar(range(len(ltrs)), freq, tick_label=ltrs)
     key = estimatedKey(frequency)
     decode(encoded_message, decoded_message, key)
 
@@ -101,8 +101,10 @@ def estimatedKey(frequency):
             keyFreq = frequency[ltr]
     if key <= ord('e'):
         return ord('e') - key
-    return 94 - (key - ord('e'))
+    return 26 - (key - ord('e'))
 
-encode("sent_decoded.txt", "sent_encoded.txt", 10)
+frequencyAnalysis("data/received_encoded.txt", "data/received_decoded.txt")
 
-decode("received_encoded.txt", "received_decoded.txt", 10)
+# encode("data/sent_decoded.txt", "data/sent_encoded.txt", 1)
+
+# decode("data/received_encoded.txt", "data/received_decoded.txt", 10)
