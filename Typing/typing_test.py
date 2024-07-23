@@ -1,25 +1,30 @@
 import tkinter as tk
+from text_generator import TextGenerator
+import time
+from text_processor import process_event
 
-class SimpleTypingApp:
+class TypingTest:
     def __init__(self, root):
+        self.start = time.time()
         self.root = root
         self.root.title("Typing Test")
         
         self.max_line = 60
 
-        self.previous_line = ""
-        '''
-        self.current_line = gen.generate(self.current_line)
-        self.current_line = self.current_line[:self.current_line.rindex(" ")]
-        self.next_line = gen.generate(self.max_line, self.current_line)
-        self.next_line = self.next_line[:self.next_line.rindex(" ")]
-        '''
+        self.keyboard = "qwerty"
 
-        self.current_line = "Test"
-        self.next_line = "Double Test"
+        self.gen = TextGenerator("data/alice_in_wonderland.txt", 5)
+
+        self.previous_line = ""
+        self.current_line = self.gen.generate(self.max_line)
+        self.current_line = self.current_line[:self.current_line.rindex(" ") + 1]
+        self.next_line = self.gen.generate(self.max_line, self.current_line)
+        self.next_line = self.next_line[:self.next_line.rindex(" ") + 1]
     
         self.typed_text = ""
         self.typed_tot = ""
+
+        self.wpm = 0
         
         self.canvas = tk.Canvas(self.root, width=1250, height=1000, bg="white")
         self.canvas.pack(pady=20)
@@ -52,7 +57,6 @@ class SimpleTypingApp:
         correct_bbox = self.canvas.bbox("all")
         correct_width = correct_bbox[2] - correct_bbox[0] if correct_bbox else 0
 
-
         self.canvas.create_text(x_center + correct_width, y_center, anchor='w', text=self.typed_text[split_point:len(self.typed_text)].replace(" ", "_"), font=('Helvetita', 45), fill="red")
 
         incorrect_bbox = self.canvas.bbox("all")
@@ -65,26 +69,33 @@ class SimpleTypingApp:
         self.canvas.create_text(x_center, y_center - 75, anchor='w', text=self.previous_line, font=('Helvetita', 45), fill="grey")
         
         self.canvas.create_text(x_center, y_center + 75, anchor='w', text=self.next_line, font=('Helvetita', 45), fill="grey")
+
+        time_spent = time.time() - self.start
+
+        self.wpm = int((len(self.typed_tot) / 5 / time_spent) * 60)
+        self.canvas.create_text(10, 30, anchor='w', text=f"wpm = {self.wpm}", font=('Helvitita', 30), fill="blue")
         
     def on_key_release(self, event):
-        if event.keysym == "BackSpace":
+        result = process_event(event, self.keyboard)
+        if result == -1:
             self.typed_text = self.typed_text[:-1]
-        elif event.keysym == "Return":
-            self.typed_text += "\n"
-        elif len(event.char) == 1:
-            self.typed_text += event.char
+            self.typed_tot = self.typed_tot[:-1]
+        elif result:
+            self.typed_text += result
+            self.typed_tot += result
         
         if self.typed_text == self.current_line:
             self.canvas.delete("all")
 
             self.previous_line = self.current_line
             self.current_line = self.next_line
-            self.next_line = "Triple Test"
+            self.next_line = self.gen.generate(self.max_line, self.current_line)
+            self.next_line = self.next_line[:self.next_line.rindex(" ") + 1]
             self.typed_text = ""
             
         self.update_canvas()
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = SimpleTypingApp(root)
+    app = TypingTest(root)
     root.mainloop()
