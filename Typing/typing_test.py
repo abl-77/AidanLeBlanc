@@ -19,7 +19,10 @@ class TypingTest:
 
         self.previous_line = ""
         self.current_line = self.gen.generate(self.max_line)
-        self.current_line = self.current_line[:self.current_line.rindex(" ") + 1]
+        try:
+            self.current_line = self.current_line[:self.current_line.rindex(" ") + 1]
+        except:
+            print("Well well well")
         self.next_line = self.gen.generate(self.max_line, self.current_line)
         self.next_line = self.next_line[:self.next_line.rindex(" ") + 1]
     

@@ -30,8 +30,6 @@ class TextGenerator:
                     copy = copy[index + self.window:]
                     chars.append(copy[0])
 
-            if len(chars) == 0:
-                print("bad")
             choice = chars[random.randint(0, len(chars) - 1)]
             result += choice
             seed += choice
