@@ -100,7 +100,7 @@ class TypingTest:
             self.next_line = self.next_line[:self.next_line.rindex(" ") + 1]
             self.typed_text = ""
 
-        rand = random.randint(0, 10)
+        rand = random.randint(0, 50)
         if rand == 1:
             if self.keyboard == "qwerty":
                 self.keyboard = "dvorak"
