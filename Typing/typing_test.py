@@ -2,6 +2,7 @@ import tkinter as tk
 from text_generator import TextGenerator
 import time
 from text_processor import process_event
+import random
 
 class TypingTest:
     def __init__(self, root):
@@ -10,6 +11,7 @@ class TypingTest:
         self.root.title("Typing Test")
         
         self.max_line = 60
+        self.background = "white"
 
         self.keyboard = "qwerty"
 
@@ -38,6 +40,8 @@ class TypingTest:
         
     def update_canvas(self):
         self.canvas.delete("all")
+
+        self.canvas.configure(background=self.background)
 
         canvas_height = self.canvas.winfo_height()
         
@@ -92,6 +96,15 @@ class TypingTest:
             self.next_line = self.gen.generate(self.max_line, self.current_line)
             self.next_line = self.next_line[:self.next_line.rindex(" ") + 1]
             self.typed_text = ""
+
+        rand = random.randint(0, 10)
+        if rand == 1:
+            if self.keyboard == "qwerty":
+                self.keyboard = "dvorak"
+                self.background = "steel blue"
+            else:
+                self.keyboard = "qwerty"
+                self.background = "white"
             
         self.update_canvas()
 
