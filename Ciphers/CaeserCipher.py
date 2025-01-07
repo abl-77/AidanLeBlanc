@@ -1,15 +1,30 @@
 
 import matplotlib.pyplot as plt
+import numpy as np
 
-def decode(encoded_message, decoded_message, key):
-    msg = ""
-    with open(encoded_message, "r") as m:
-        for line in m:
-            msg += decodeLine(line, key)
-        m.close()
-    with open(decoded_message, "w") as d:
-        d.write(msg)
-        d.close()
+def decode(encoded_message, decoded_message, keys):
+    check = ""
+    i = 0
+    while check == "":
+        print(f"Using key {keys[i]}")
+        with open(encoded_message, "r") as m:
+            test = m.readline()
+            test = decodeLine(test, keys[i])
+            print(f"First Line: {test}")
+            check = input("Verify Results:")
+            
+            if check == "":
+                i += 1
+                continue
+            
+            msg = test
+            for line in m:
+                msg += decodeLine(line, keys[i])
+            m.close()
+            
+        with open(decoded_message, "w") as d:
+            d.write(msg)
+            d.close()
 
 def decodeLine(line, key):
     str = ""
@@ -85,26 +100,24 @@ def frequencyAnalysis(encoded_message, decoded_message):
                     else:
                         frequency[ord(ltr)] = 1
         m.close()
-    ltrs = list(frequency.keys())
-    freq = list(frequency.values())
+    keys = list(frequency.keys())
+    values = list(frequency.values())
+    sorted_index = np.argsort(values)[::-1]
+    sorted_freq = {keys[i]: values[i] for i in sorted_index}
+    keys = convertKeys(sorted_freq)
+    decode(encoded_message, decoded_message, keys)
 
-    plt.bar(range(len(ltrs)), freq, tick_label=ltrs)
-    key = estimatedKey(frequency)
-    decode(encoded_message, decoded_message, key)
+def convertKeys(frequency):
+    keys = []
+    for ltr in frequency.keys():
+        if ltr <= ord("e"):
+            keys.append(ord("e") - ltr)
+        else:
+            keys.append(26 - (ltr - ord("e")))
+    return keys
 
-def estimatedKey(frequency):
-    keyFreq = 0
-    key = 0
-    for ltr in frequency:
-        if (frequency[ltr] > keyFreq):
-            key = ltr
-            keyFreq = frequency[ltr]
-    if key <= ord('e'):
-        return ord('e') - key
-    return 26 - (key - ord('e'))
+# encode("data/sent_decoded.txt", "data/received_encoded.txt", 1)
 
 frequencyAnalysis("data/received_encoded.txt", "data/received_decoded.txt")
-
-# encode("data/sent_decoded.txt", "data/sent_encoded.txt", 1)
 
 # decode("data/received_encoded.txt", "data/received_decoded.txt", 10)
