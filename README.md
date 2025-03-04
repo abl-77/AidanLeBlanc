@@ -53,7 +53,7 @@ This repository is a curated selection of my work, emphasizing **practical probl
 Feel free to reach out if you have any questions or would like to discuss my projects further!  
 
 📧 Email: **[abl77@case.edu]**  
-🔗 LinkedIn: **[Your LinkedIn Profile](www.linkedin.com/in/aidan-leblanc)** _(Replace # with the actual link)_  
+🔗 LinkedIn: **[LinkedIn Profile](https://www.linkedin.com/in/aidan-leblanc)**
 
 ---
 
