@@ -41,6 +41,14 @@ class QuadCube:
                                 [c, c, c, c]])
             self.cube = np.array(self.cube)
 
+    def heuristic(self):
+        count = 0
+        for side in self.cube:
+            unique, counts = np.unique(side, return_counts=True)
+            mask = np.where(side == unique[np.argmax(counts)])
+            count += side[mask].shape[0]
+        return 16*6 - count
+
     def rotate_clockwise(self, side):
         '''
         Helper method to rotate a specified side clockwise
@@ -220,7 +228,5 @@ if __name__=="__main__":
                      [YELLOW, GREEN, GREEN, YELLOW],
                      [YELLOW, GREEN, GREEN, YELLOW],
                      [RED, GREEN, GREEN, RED]]])
-    c = QuadCube(cube)
-    c.plot_cube()
-    c.rotate_slice(0, "COUNTER")
-    c.plot_cube()
+    c = QuadCube()
+    print(c.heuristic())
