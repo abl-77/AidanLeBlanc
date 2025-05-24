@@ -1,3 +1,6 @@
 [submodule "SeniorProject"]
 	path = SeniorProject
 	url = https://github.com/Sciguy128/SeniorProject.git
+[submodule "graph-images"]
+	path = graph-images
+	url = https://github.com/abl-77/graph-images.git
