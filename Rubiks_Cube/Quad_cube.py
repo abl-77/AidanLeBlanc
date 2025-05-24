@@ -32,6 +32,8 @@ class QuadCube:
         '''
         if isinstance(cube, np.ndarray):
             self.cube = cube
+        elif isinstance(cube, QuadCube):
+            self.cube = np.array(cube.cube)
         else:
             self.cube = []
             for c in colors:
@@ -66,6 +68,8 @@ class QuadCube:
         self.cube[side, 1:3, 1] = self.cube[side, 2, 1:3]
         self.cube[side, 1:3, 2] = mid_temp
 
+        return self.cube
+
     def rotate_counter(self, side):
         '''
         Helper method to rotate a specified side counterclockwise
@@ -82,6 +86,8 @@ class QuadCube:
         mid_temp = np.array(self.cube[side, 1, 1:3])
         self.cube[side, 1:3, 2] = self.cube[side, 2, 1:3][::-1]
         self.cube[side, 1:3, 1] = mid_temp[::-1]
+
+        return self.cube
 
     def rotate_row(self, row, direction):
         '''
@@ -112,6 +118,8 @@ class QuadCube:
             self.cube[4, row] = self.cube[1, row]
             self.cube[1, row] = temp
 
+        return self.cube
+
     def rotate_col(self, col, direction):
         '''
         Possible move that rotates a given column up or down
@@ -141,6 +149,8 @@ class QuadCube:
             self.cube[5, :, col] = self.cube[1, :, col]
             self.cube[1, :, col] = temp
 
+        return self.cube
+
     def rotate_slice(self, slice, direction):
         '''
         Possible move that rotates a given slice clockwise or counterclockwise
@@ -165,11 +175,12 @@ class QuadCube:
             elif slice == 3:
                 self.rotate_clockwise(3)
             temp = np.array(self.cube[0, 3 - slice])
-            self.cube[0, 3 - slice] = self.cube[2, :, slice][::-1]
-            self.cube[2, :, slice] = self.cube[5, slice]
-            self.cube[5, slice] = self.cube[4, :, 3 - slice][::-1]
-            self.cube[4, :, 3 - slice] = temp
+            self.cube[0, 3 - slice] = self.cube[2, :, slice]
+            self.cube[2, :, slice] = self.cube[5, slice][::-1]
+            self.cube[5, slice] = self.cube[4, :, 3 - slice]
+            self.cube[4, :, 3 - slice] = temp[::-1]
         
+        return self.cube
 
     def plot_cube(self):
         '''
@@ -228,5 +239,12 @@ if __name__=="__main__":
                      [YELLOW, GREEN, GREEN, YELLOW],
                      [YELLOW, GREEN, GREEN, YELLOW],
                      [RED, GREEN, GREEN, RED]]])
-    c = QuadCube()
-    print(c.heuristic())
+    c = QuadCube(cube)
+    c.plot_cube()
+    c.rotate_col(3, "D")
+    c.plot_cube()
+    c.rotate_slice(0, "CLOCK")
+    c.plot_cube()
+
+    # Counter slice issue (Happens on 0)
+    # Column slice issue (Happens on 1)
